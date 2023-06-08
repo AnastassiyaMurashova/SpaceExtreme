@@ -1,0 +1,82 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class movement : MonoBehaviour {
+
+    public static float Speed = 4f;
+    public bool ActivaSalto = true;
+    public float Salto = 6;
+
+    public Animator controlAnimacion;
+
+    public static bool direccionBala = false;
+    public static bool ParardireccionBala = false;
+
+    bool isRightKeyPressed = false;
+    bool isLeftKeyPressed = false;
+
+    void Awake (){
+     DontDestroyOnLoad(gameObject);
+    }
+
+    // Use this for initialization
+    void Start() {
+        
+    }
+
+    // Update is called once per frame
+    void Update() {
+      if(mainScript.Vida <= 0) return;
+
+      //Debug.Log(ActivaSalto);
+      // GETAXIS 
+      float H = Input.GetAxis("Horizontal")*Speed;
+      H *= UnityEngine.Time.deltaTime;
+      transform.Translate (H,0,0);  
+
+      // INPUTS CONTROL NO PREDEFINIDOS 
+      if(Input.GetKey(KeyCode.Space) && ActivaSalto == true ){
+        ActivaSalto = false;
+        GetComponent<Rigidbody2D> ().AddForce (new Vector2(0,Salto),ForceMode2D.Impulse); //salto
+      } 
+
+      if(Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D) )  {
+        isRightKeyPressed = true;
+        transform.localScale = new Vector3 (1,1,1);  
+        controlAnimacion.SetBool ("activewalking",true);
+        direccionBala = true;
+        ParardireccionBala = true;
+        parallax.DireccionPersonaje = "derecha";
+      }
+      
+      if(Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A) )  {
+        isLeftKeyPressed = true;
+      transform.localScale = new Vector3 (-1,1,1); 
+      controlAnimacion.SetBool ("activewalking",true);
+      direccionBala = false;
+      ParardireccionBala = false;
+      parallax.DireccionPersonaje = "izquierda";
+      }
+      
+      if(Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.D) )  {
+      isRightKeyPressed = false;        
+      if(!isLeftKeyPressed) controlAnimacion.SetBool ("activewalking",false);
+      ParardireccionBala = false;
+      parallax.DireccionPersonaje = "parado";
+      } 
+
+      if(Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.A) )  {
+      isLeftKeyPressed = false;
+      if(!isRightKeyPressed) controlAnimacion.SetBool ("activewalking",false);
+      ParardireccionBala = true;
+      parallax.DireccionPersonaje = "parado";
+      }
+     }// fin update
+
+  void OnCollisionEnter2D () {
+    ActivaSalto = true;
+
+  }
+
+} 
