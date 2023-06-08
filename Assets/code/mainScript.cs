@@ -38,9 +38,9 @@ void Awake(){
 
 
       
-      Debug.Log("Vida "+Vida);  
-      Debug.Log("Score "+Score); 
-      Debug.Log("Enemigos "+Enemigos);
+      //Debug.Log("Vida "+Vida);  
+      //Debug.Log("Score "+Score); 
+      //Debug.Log("Enemigos "+Enemigos);
       
     }
 

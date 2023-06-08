@@ -16,6 +16,8 @@ public class movement : MonoBehaviour {
     bool isRightKeyPressed = false;
     bool isLeftKeyPressed = false;
 
+    
+
     void Awake (){
      DontDestroyOnLoad(gameObject);
     }
